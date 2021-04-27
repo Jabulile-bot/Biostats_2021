@@ -1,6 +1,6 @@
 #Author: Jabulile Leroko
 #Day2 homework
-library(readr)
+
 snakes <- read_csv("snakes.csv") #Read in the data snakes.csv
 snakes$day = as.factor(snakes$day) #make the column day a factor because ANOVA...
 #... works with factors only and day is a continuous variable
@@ -12,7 +12,7 @@ snakes.summary <- snakes %>%
             sd_openings = sd(openings)) %>% 
   ungroup() #Reverse the grouping
 snakes.summary
-#The problem is we grouped by day and snake, these two columns are independent
+
 
 snakes.summary <- snakes %>% 
   group_by(day) %>% 
@@ -60,20 +60,18 @@ plot(snakes.tukey, las = 1, col = "red")
 #These means are not signif different, are similar
 
 #MY OWN GRAPHS... HECTIC!!!!
-#1.
-a <- ggplot(snakes, aes(x = openings)) + geom_density() +theme_classic()
 
-#2.
-b <- ggplot(snakes, aes(x = openings)) + 
+#1.
+a <- ggplot(snakes, aes(x = openings)) + 
   geom_histogram(aes(y=..density..), binwidth = 5)+    # Histogram with density instead of count on y-axis
   geom_density(alpha=.2, fill="#FF6666") +  # Overlay with transparent density plot
   theme_classic()
 
 
-#3.
-c <- ggplot(snakes) +
+#2.
+b <- ggplot(snakes) +
   geom_point(data = snakes, aes(x = day, y = openings), 
              col = "black", fill = "red", shape = 23, size = 3) +
   theme_classic()
 
-ggarrange(a, b, c, ncol = 2, nrow = 2, labels = "AUTO") 
+ggarrange(a, b, ncol = 2, labels = "AUTO") 
