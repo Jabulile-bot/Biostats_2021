@@ -1,7 +1,9 @@
-
+#Jabulile Leroko
 
 library(tidyverse)
 library(plotly)
+library(tidyr)
+library(dplyr)
 
 #At some point, we'll have to compare tests
 #Is group A different from B
@@ -41,7 +43,7 @@ r_dat %>%
   summarise(sample_var = var(dat))
 #var for A is not more than 4x > than that of B... so, they're similar
 
-#Now we can do a t-test
+
 
 two_assum <- function(x) {
   x_var <- var(x)
@@ -96,14 +98,39 @@ ecklonia_sub %>%
   group_by(site) %>% 
   summarise(stipe_mass_var = two_assum(value)[1],
             stipe_mass_norm = two_assum(value)[2])
-
+#Samples are normal and similar
 # traditional output
 t.test(value ~ site, data = ecklonia_sub, var.equal = TRUE, alternative = "greater")
-#p-value is 0.03657 which is less than 0.05, which means are signific different
+#p-value is 0.03657 which is less than 0.05, which means batsata has stipe...
+#mass greater than boulders beach
+
+#Let me test stipe length
+ecklonia_sub2 <- ecklonia %>% 
+  filter(variable == "stipe_length")
+
+ggplot(data = ecklonia_sub2, aes(x = variable, y = value, fill = site)) +
+  geom_boxplot() +
+  coord_flip() +
+  labs(y = "stipe length (cm)", x = "") +
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y = element_blank())
+
+#H0: The two sites have same stipe length
+#Check for normality and homoscedasticity
+ecklonia_sub2 %>% 
+  group_by(site) %>% 
+  summarise(stipe_length_var = two_assum(value)[1],
+            stipe_length_norm = two_assum(value)[2])
+#The samples are homogenous, but Batsasa rock is not normally distributed
+
+#Wilcox test
+wilcox.test(value ~ site, data = filter(ecklonia_sub2, 
+                                        variable == "stipe_length"))
+#p< 0.001752, significant to reject the null hypothesis
+#The sites are not equal in stipe length
 
 library(ggpubr)
-# dataframe output
-compare_means(value ~ site, data = ecklonia_sub, method = "t.test", var.equal = TRUE, alternative = "greater")
+
 
 #ANOVA!!!!
 #the assumptions for t-tests need to apply as well
