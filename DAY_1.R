@@ -181,4 +181,4 @@ chicks %>% filter(Time == "20") %>%
 aov1 <- aov(weight~Diet, data = chicks)
 summary(aov1)
 #p< 6.43e-7, statistically significant to reject the null hypthesis
-#Chick weight is affected by diet
+#Chick weight is affected by diet.
