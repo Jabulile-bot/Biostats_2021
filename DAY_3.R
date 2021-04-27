@@ -1,6 +1,10 @@
 #Jabulile Leroko
 #Day 3
 
+library(dplyr)
+library(tidyr)
+library(tidyverse)
+
 data("faithful")
 eruption.lm <- lm(eruptions ~ waiting, data = faithful)
 summary(eruption.lm)
@@ -33,7 +37,7 @@ ggplot(data = faithful, aes(x = waiting, y = eruptions)) +
 #5. Homoscedasticity
 #6. Type of measurement. If continuous, Pearson corr. if Ordinal, Spearman corr.
 
-library(tidyverse)
+
 library(ggpubr)
 library(corrplot)
 
@@ -66,7 +70,7 @@ ecklonia$length <- as.numeric(cut((ecklonia$stipe_length+ecklonia$frond_length),
 
 # Run test on any variable
 cor.test(ecklonia$length, ecklonia$digits)
-
+#Not that much of a correlation
 
 #Kendall rank corr works fr both ordinal and continuous, also for data 
 #that is not normally distributed
@@ -102,11 +106,9 @@ corrplot(ecklonia_pearson, method = "circle")
 #EXERCISE
 #Heat map on ggplot2
 
-
-
 #Let us do this
 ecklonia <- read_csv("ecklonia.csv")
-
+library(reshape2)
 
 melted <- melt(ecklonia_pearson)
 
@@ -119,7 +121,7 @@ library(plyr)
 ?dlply 
 
 #Basically, it takes an existing list, splits it apart and extracts some info
-#from it
+#from it... still not sure
 dlply(snakes, "day")
 
 #This splits the days from the whole data, separate them and now shows me 
